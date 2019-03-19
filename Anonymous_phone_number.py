@@ -5,6 +5,7 @@ import requests
 import re
 import time
 import random
+import base64
 
 def formOutput():
 	'''
@@ -18,12 +19,13 @@ def getInfo():
 	'''
 	访问资源，提取关键信息
 	'''
+	urlb64 = 'd3d3LnBkZmxpYnIuY29t'
 	t = time.localtime()
 	print 'Time:',str(t.tm_hour)+":"+str(t.tm_min)+":"+str(t.tm_sec)
 	count = 1
 	nums = {}
 	for page in xrange(4):
-		url = 'https://www.pdflibr.com/?page='+str(page+1)
+		url = 'https://'+base64.b64decode(urlb64)+'/?page='+str(page+1)
 		res = requests.get(url)
 		pat = re.compile('<h3>.*?</h3>[\s\S]*?href=".*?"')
 		#pat_info = re.compile('<h3>(.*?)</h3>[\s\S]*?(<b>|)(.*?)(</b>||)[\s\S]*?href="(.*?)"')
@@ -45,9 +47,10 @@ def chosePhone(nums,c):
 	'''
 	选择手机号，获取验证码
 	'''
+	urlb64 = 'd3d3LnBkZmxpYnIuY29t'
 	yon = 'n'
 	while(yon == 'n'):
-		url2 = 'https://www.pdflibr.com/'+nums[str(c)][2]
+		url2 = 'https://'+base64.b64decode(urlb64)+'/'+nums[str(c)][2]
 		res2 = requests.get(url2)
 		pat2 = '<tr>\s*<td>1</td>\s*<td>\s([*\d]*)\s</td>\s*<td>\s(.*?)\s</td>\s*<td>\s*<time>(.*?)</time>\s*</td>\s*</tr>'
 		for i in xrange(3):
