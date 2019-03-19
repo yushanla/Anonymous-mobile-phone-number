@@ -18,6 +18,8 @@ def getInfo():
 	'''
 	访问资源，提取关键信息
 	'''
+	t = time.localtime()
+	print 'Time:',str(t.tm_hour)+":"+str(t.tm_min)+":"+str(t.tm_sec)
 	count = 1
 	nums = {}
 	for page in xrange(4):
@@ -35,21 +37,21 @@ def getInfo():
 			page_num = re.search('href="(.*?)"',i).group(1)
 			nums[str(count)] = [phone_number,number_of_use,page_num]
 			count += 1
-	time.sleep(random.randint(0,3))
+		time.sleep(random.randint(1,5))
+		print 'Page',page+1
 	return count,nums
 
 def chosePhone(nums,c):
 	'''
 	选择手机号，获取验证码
 	'''
-	url2 = 'https://www.pdflibr.com/'+nums[str(c)][2]
-	res2 = requests.get(url2)
-	pat2 = '<tr>\s*<td>1</td>\s*<td>\s([*\d]*)\s</td>\s*<td>\s(.*?)\s</td>\s*<td>\s*<time>(.*?)</time>\s*</td>\s*</tr>'
-	for i in xrange(3):
-		print re.search(pat2,res2.text).group(i+1)
-	yon = raw_input('is there your code ?(y or n)')
+	yon = 'n'
 	while(yon == 'n'):
-		chosePhone()
+		url2 = 'https://www.pdflibr.com/'+nums[str(c)][2]
+		res2 = requests.get(url2)
+		pat2 = '<tr>\s*<td>1</td>\s*<td>\s([*\d]*)\s</td>\s*<td>\s(.*?)\s</td>\s*<td>\s*<time>(.*?)</time>\s*</td>\s*</tr>'
+		for i in xrange(3):
+			print re.search(pat2,res2.text).group(i+1)
 		yon = raw_input('is there your code ?(y or n)')
 
 def main():
